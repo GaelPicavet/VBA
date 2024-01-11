@@ -177,3 +177,425 @@ Sub DemanderValeurUtilisateur()
         End If
     Loop
 End Sub
+Public Function GestionErreur() As Variant
+    Dim inputBoxLeft As Double
+    Dim inputBoxTop As Double
+    
+    With Application
+        inputBoxLeft = .Selection.Left + .Left
+        inputBoxTop = .Selection.Top + .Top
+
+        Do
+            ' Demander à l'utilisateur de retaper une valeur entre 1 et 100
+            GestionErreur = .InputBox("La valeur saisie n'est pas valide. Veuillez entrer un nombre entre 1 et 100.", "Erreur de saisie", , inputBoxLeft, inputBoxTop)
+        Loop Until IsNumeric(GestionErreur) And GestionErreur >= 1 And GestionErreur <= 100 Or GestionErreur = ""
+    End With
+End Function
+
+Sub DemanderValeur()
+    ' Déclaration des variables
+    Dim valeurUtilisateur As Variant
+    Dim valeurNumerique As Double
+
+    With Application
+        Do
+            ' Demander à l'utilisateur de taper une valeur entre 1 et 100
+            valeurUtilisateur = .InputBox("Tape une valeur entre 1 et 100", "Entrer une valeur", , .Selection.Left + .Left, .Selection.Top + .Top)
+
+            ' Vérifier si l'utilisateur a cliqué sur Annuler
+            If valeurUtilisateur = "" Then
+                MsgBox "Vous avez annulé. La procédure se termine.", vbInformation
+                Exit Sub
+            End If
+
+            ' Convertir la valeur en nombre
+            On Error Resume Next
+            valeurNumerique = CDbl(valeurUtilisateur)
+            On Error GoTo 0
+
+            ' Vérifier si la valeur est un nombre valide entre 1 et 100
+            If IsNumeric(valeurNumerique) And valeurNumerique >= 1 And valeurNumerique <= 100 Then
+                ' Afficher la valeur dans le coin supérieur gauche de l'écran
+                MsgBox "Vous avez saisi la valeur : " & valeurNumerique, vbInformation, "Valeur valide"
+                Exit Sub
+            Else
+                ' Appeler la fonction de correction pour retaper une valeur
+                valeurUtilisateur = GestionErreur
+                If valeurUtilisateur = "" Then
+                    MsgBox "Vous avez annulé. La procédure se termine.", vbInformation
+                    Exit Sub
+                End If
+            End If
+        Loop
+    End With
+End Sub
+Sub VerifierCelluleA1()
+    ' Vérifier si la cellule A1 est vide
+    If IsEmpty(ActiveSheet.Range("A1").Value) Then
+        ' Émettre un bip
+        Beep
+        ' Afficher un message sans titre
+        MsgBox "pas de titre", vbExclamation, "La cellule A1 est vide"
+    End If
+End Sub
+
+Sub FormaterCelluleA1()
+    ' Vérifier si la cellule A1 est vide
+    If IsEmpty(ActiveSheet.Range("A1").Value) Then
+        ' Avertir l'utilisateur si la cellule est vide
+        MsgBox "La cellule A1 est vide. Aucun format ne sera appliqué.", vbExclamation, "Avertissement"
+    Else
+        ' Appliquer le format à la cellule A1
+        With ActiveSheet.Range("A1").Font
+            .Bold = True
+            .Underline = xlUnderlineStyleSingle
+            .Color = RGB(255, 0, 0) ' Rouge
+        End With
+    End If
+End Sub
+Sub AppliquerCouleurSelonA1()
+    ' Vérifier la couleur de la cellule A1
+    Select Case ActiveSheet.Range("A1").Interior.Color
+        Case RGB(255, 0, 0) ' Rouge
+            ' Colorier toutes les cellules en rouge
+            ActiveSheet.Cells.Interior.Color = RGB(255, 0, 0)
+        Case RGB(0, 255, 0) ' Vert
+            ' Colorier toutes les cellules en vert
+            ActiveSheet.Cells.Interior.Color = RGB(0, 255, 0)
+        Case RGB(0, 0, 255) ' Bleu
+            ' Colorier toutes les cellules en bleu
+            ActiveSheet.Cells.Interior.Color = RGB(0, 0, 255)
+        Case Else ' Si aucune des couleurs précédentes
+            ' Colorier toutes les cellules en jaune
+            ActiveSheet.Cells.Interior.Color = RGB(255, 255, 0)
+    End Select
+End Sub
+Sub ExempleUtilisationTotalAPayer()
+    ' Définir les valeurs de test
+    Dim quantite As Integer
+    Dim prixHT As Double
+    Dim port As Double
+    
+    ' Assigner des valeurs de test
+    quantite = InputBox("Entrez la quantité:")
+    prixHT = InputBox("Entrez le prix HT par pièce:")
+    port = InputBox("Entrez les frais de port:")
+    
+    ' Appeler la fonction TotalAPayer
+    Dim total As Double
+    total = TotalAPayer(quantite, prixHT, port)
+    
+    ' Afficher le résultat
+    If total <> 0 Then
+        MsgBox "Le montant total à payer est de : " & total & " euros."
+    End If
+End Sub
+
+Function TotalAPayer(quantite As Integer, prixHT As Double, port As Double) As Double
+    Dim remise As Double
+
+    Select Case quantite
+        Case 1
+            remise = 0
+        Case 2 To 10
+            remise = 0.01
+        Case 11 To 20
+            remise = 0.05
+        Case 21 To 30
+            remise = 0.1
+        Case 31 To 40
+            remise = 0.15
+        Case 41 To 50
+            remise = 0.2
+        Case Is > 50
+            MsgBox "Erreur dans la quantité. La commande ne peut pas dépasser 50 pièces."
+            Exit Function
+    End Select
+
+    TotalAPayer = quantite * prixHT * (1 - remise) + port
+End Function
+Sub SaisieSommeInferieure1000()
+    ' Déclaration des variables
+    Dim somme As Integer
+    Dim nombre As Integer
+    
+    ' Initialiser la somme
+    somme = 0
+    
+    ' Boucle tant que la somme est inférieure à 1000
+    Do While somme < 1000
+        ' Demander à l'utilisateur de taper un nombre
+        nombre = Val(InputBox("Entrez un nombre de 3 chiffres maximum:"))
+        
+        ' Vérifier si l'entrée est un nombre de 3 chiffres maximum
+        If nombre >= 0 And nombre <= 999 Then
+            ' Ajouter le nombre à la somme
+            somme = somme + nombre
+        Else
+            ' Afficher un message d'erreur si l'entrée n'est pas valide
+            MsgBox "Veuillez entrer un nombre de 3 chiffres maximum.", vbExclamation, "Erreur de saisie"
+        End If
+    Loop
+    
+    ' Afficher la somme finale
+    MsgBox "La somme des nombres est maintenant supérieure ou égale à 1000. La somme totale est : " & somme, vbInformation, "Somme atteinte"
+End Sub
+Sub SaisieDateValide()
+    ' Déclaration des variables
+    Dim userInput As Variant
+    
+    ' Boucle jusqu'à ce que l'utilisateur entre une date valide
+    Do
+        ' Demander à l'utilisateur de taper une date
+        userInput = InputBox("Entrez une date au format JJ/MM/AAAA :")
+        
+        ' Vérifier si l'utilisateur a appuyé sur Annuler
+        If userInput = "" Then
+            MsgBox "Vous avez annulé. La procédure se termine.", vbInformation
+            Exit Sub
+        End If
+        
+        ' Vérifier si l'entrée est une date valide
+        If IsDate(userInput) Then
+            Exit Do ' Sortir de la boucle si la date est valide
+        Else
+            ' Afficher un message d'erreur si la date n'est pas valide
+            MsgBox "Date non reconnue. Veuillez entrer une date valide au format JJ/MM/AAAA.", vbExclamation, "Erreur de saisie"
+        End If
+    Loop
+    
+    ' Afficher la date valide
+    MsgBox "Vous avez entré la date : " & CDate(userInput), vbInformation, "Date valide"
+End Sub
+
+Sub RemplirCellulesColonneE()
+    ' Déclaration de la variable i
+    Dim i As Integer
+
+    ' Activer la feuille "Charleroi" (assurez-vous que la feuille existe)
+    On Error Resume Next
+    Sheets("Charleroi").Activate
+    On Error GoTo 0
+    
+    ' Vérifier si la feuille a été activée avec succès
+    If ActiveSheet.Name = "Charleroi" Then
+        ' Sélectionner la cellule E5
+        Range("E5").Select
+
+        ' Boucle pour remplir les cellules de la colonne E de la ligne 5 à 1000
+        For i = 1 To 1000
+            ' Inscrire le texte dans la cellule active
+            ActiveCell.Value = "Je suis dans la cellule " & i & " de la colonne E"
+            
+            ' Descendre d'une cellule si ce n'est pas la dernière itération
+            If i < 1000 Then
+                ActiveCell.Offset(1, 0).Select
+            End If
+        Next i
+    Else
+        MsgBox "La feuille 'Charleroi' n'a pas été trouvée dans le classeur.", vbExclamation, "Feuille manquante"
+    End If
+End Sub
+Sub RemplirCellulesColonneE2()
+    Dim i As Integer ' Déclaration de la variable i
+
+    ' Activer la feuille "Charleroi" (assurez-vous que la feuille existe)
+    On Error Resume Next
+    Sheets("Charleroi").Activate
+    On Error GoTo 0
+    
+    ' Vérifier si la feuille a été activée avec succès
+    If ActiveSheet.Name = "Charleroi" Then
+        ' Sélectionner la cellule E5
+        Range("E5").Select
+
+        ' Boucle pour remplir les cellules de la colonne E de la ligne 5 à 1000, avec un pas de 5
+        For i = 1 To 1000 Step 5
+            ' Inscrire le texte dans la cellule active
+            ActiveCell.Value = "Je suis dans la cellule " & i & " de la colonne E"
+
+            ' Descendre d'une cellule si ce n'est pas la dernière itération
+            If i + 5 <= 1000 Then
+                ActiveCell.Offset(5, 0).Select
+            End If
+        Next i
+    Else
+        MsgBox "La feuille 'Charleroi' n'a pas été trouvée dans le classeur.", vbExclamation, "Feuille manquante"
+    End If
+End Sub
+Sub RenommerFeuilles()
+    Dim i As Integer
+    
+    ' Désactiver les mises à jour de l'écran pour améliorer les performances
+    Application.ScreenUpdating = False
+    
+    ' Boucle à travers toutes les feuilles du classeur
+    For i = 1 To Sheets.Count
+        ' Renommer la feuille avec l'index incrémentiel
+        Sheets(i).Name = CStr(i)
+    Next i
+    
+    ' Réactiver les mises à jour de l'écran
+    Application.ScreenUpdating = True
+End Sub
+
+Sub GestionDesFeuilles()
+    Dim i As Integer ' Déclaration de la variable i
+
+    ' Désactiver les messages d'alerte d'Excel
+    Application.DisplayAlerts = False
+    
+    On Error Resume Next ' Ignorer les erreurs et continuer
+
+    ' Boucle pour ajuster le nombre de feuilles à 12
+    Do While Sheets.Count <> 12
+        If Sheets.Count < 12 Then
+            ' Ajouter une feuille si trop peu
+            Sheets.Add After:=Sheets(Sheets.Count)
+        Else
+            ' Retirer une feuille si trop de feuilles
+            Sheets(Sheets.Count).Delete
+        End If
+    Loop
+
+    ' Renommer les feuilles de janvier à décembre
+    For i = 1 To 12
+        Sheets(i).Name = Format(DateSerial(Year(Date), i, 1), "mmmm")
+    Next i
+
+    ' Réactiver les messages d'alerte d'Excel
+    Application.DisplayAlerts = True
+
+    On Error GoTo 0 ' Réactiver la gestion normale des erreurs
+End Sub
+
+Sub AfficherNombreBoitesEtTri()
+    Dim nbBoites As Integer ' Variable pour stocker le nombre de boîtes de dialogue
+
+    ' Afficher le nombre de boîtes de dialogue intégrées
+    nbBoites = Application.Dialogs.Count
+    MsgBox "Nombre de boîtes de dialogue intégrées : " & nbBoites, vbInformation, "Information"
+
+    ' Afficher la boîte de dialogue de tri
+    On Error Resume Next ' Ignorer les erreurs
+    Application.Dialogs(xlDialogSort).Show
+    On Error GoTo 0 ' Réactiver la gestion normale des erreurs
+End Sub
+Sub SelectionnerEtAfficherFichiers()
+    Dim fichiers As Variant
+    Dim i As Integer
+
+    ' Afficher la boîte de dialogue de sélection de fichiers
+    fichiers = Application.GetOpenFilename(FileFilter:="Fichiers Excel (*.xlsx; *.xls), *.xlsx; *.xls", Title:="Sélectionner un ou plusieurs fichiers", MultiSelect:=True)
+
+    ' Vérifier si des fichiers ont été sélectionnés
+    If IsArray(fichiers) Then
+        ' Afficher les noms et chemins des fichiers dans une boîte de message
+        Dim message As String
+        message = "Fichiers sélectionnés :"
+        For i = LBound(fichiers) To UBound(fichiers)
+            message = message & vbCrLf & fichiers(i)
+        Next i
+        MsgBox message, vbInformation, "Informations sur les fichiers"
+    Else
+        MsgBox "Aucun fichier sélectionné.", vbInformation, "Informations"
+    End If
+End Sub
+Sub OuvrirFichierExcelAvecBoiteDialog()
+    Dim dlg As FileDialog
+    Dim fichier As String
+
+    ' Créer une instance de la boîte de dialogue de fichier
+    Set dlg = Application.FileDialog(msoFileDialogOpen)
+
+    ' Configurer la boîte de dialogue
+    With dlg
+        .Title = "Ouvrir un fichier Excel"
+        .Filters.Clear
+        .Filters.Add "Fichiers Excel", "*.xlsx; *.xls", 1
+        .AllowMultiSelect = False
+    End With
+
+    ' Afficher la boîte de dialogue et vérifier si l'utilisateur a cliqué sur "Ouvrir"
+    If dlg.Show = -1 Then
+        ' Récupérer le chemin du fichier sélectionné
+        fichier = dlg.SelectedItems(1)
+
+        ' Ouvrir le fichier Excel sélectionné
+        Workbooks.Open fichier
+    Else
+        MsgBox "Aucun fichier sélectionné.", vbInformation, "Informations"
+    End If
+End Sub
+Sub EnregistrerFichierAvecBoiteDialog()
+    Dim cheminFichier As Variant
+
+    ' Afficher la boîte de dialogue pour choisir l'emplacement et le nom du fichier
+    cheminFichier = Application.GetSaveAsFilename(FileFilter:="Fichiers Excel (*.xlsx), *.xlsx", Title:="Enregistrer le fichier sous")
+
+    ' Vérifier si l'utilisateur a cliqué sur "Annuler" dans la boîte de dialogue
+    If cheminFichier <> "Faux" And cheminFichier <> "False" Then
+        ' Enregistrer le fichier avec le nom et l'emplacement choisis
+        ActiveWorkbook.SaveAs cheminFichier
+    Else
+        MsgBox "L'enregistrement a été annulé.", vbInformation, "Informations"
+    End If
+End Sub
+Sub StatistiquesPlageSelectionAutomatique()
+    Dim plage As Range
+    Dim moyenne As Double
+    Dim maximum As Double
+    Dim minimum As Double
+
+    ' Activer la feuille active
+    ActiveSheet.Activate
+
+    ' Inviter le système à proposer une plage à sélectionner
+    On Error Resume Next ' Ignorer les erreurs
+    Set plage = Application.InputBox("Sélectionnez une plage de données", Type:=8)
+    On Error GoTo 0 ' Réactiver la gestion normale des erreurs
+
+    ' Vérifier si l'utilisateur a cliqué sur "Annuler" dans la boîte de dialogue
+    If plage Is Nothing Then
+        MsgBox "Opération annulée.", vbInformation, "Informations"
+        Exit Sub
+    End If
+
+    ' Calculer la moyenne, le maximum et le minimum
+    moyenne = WorksheetFunction.Average(plage)
+    maximum = WorksheetFunction.Max(plage)
+    minimum = WorksheetFunction.Min(plage)
+
+    ' Afficher les statistiques dans une boîte de dialogue
+    MsgBox "Moyenne : " & moyenne & vbCrLf & _
+           "Maximum : " & maximum & vbCrLf & _
+           "Minimum : " & minimum, vbInformation, "Statistiques de la plage"
+End Sub
+Sub SupprimerColonnesSelectionnees()
+    Dim choixUtilisateur As VbMsgBoxResult
+    Dim plageSelectionnee As Range
+
+    ' Sélectionner la plage
+    On Error Resume Next ' Ignorer les erreurs
+    Set plageSelectionnee = Application.InputBox("Sélectionnez la ou les colonnes à supprimer", Type:=8)
+    On Error GoTo 0 ' Réactiver la gestion normale des erreurs
+
+    ' Vérifier si l'utilisateur a cliqué sur "Annuler" dans la boîte de dialogue
+    If plageSelectionnee Is Nothing Then
+        MsgBox "Opération annulée.", vbInformation, "Informations"
+        Exit Sub
+    End If
+
+    ' Afficher la boîte de dialogue personnalisée
+    choixUtilisateur = MsgBox("Voulez-vous vraiment supprimer la ou les colonnes sélectionnées?", _
+                              vbExclamation + vbYesNo + vbDefaultButton2, "Confirmation de suppression")
+
+    ' Vérifier le choix de l'utilisateur
+    If choixUtilisateur = vbYes Then
+        ' Supprimer la ou les colonnes
+        plageSelectionnee.EntireColumn.Delete
+        MsgBox "Colonnes supprimées avec succès.", vbInformation, "Informations"
+    Else
+        MsgBox "Suppression annulée.", vbInformation, "Informations"
+    End If
+End Sub
