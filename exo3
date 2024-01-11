@@ -1,0 +1,10 @@
+Sub GrasItalique()
+'
+' GrasItalique Macro
+'
+
+'
+    With Selection.Font
+        .FontStyle = "Gras italique"
+    End With
+End Sub
