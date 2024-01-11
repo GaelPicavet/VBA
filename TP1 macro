@@ -1,0 +1,179 @@
+Sub Absolu()
+'
+' Absolu Macro
+'
+
+'
+    ActiveCell.FormulaR1C1 = "6"
+    Range("A1").Select
+End Sub
+Sub Relatif()
+'
+' Relatif Macro
+'
+
+'
+    ActiveCell.FormulaR1C1 = "50"
+    ActiveCell.Offset(1, 0).Range("A1").Select
+End Sub
+Sub GrasItalique()
+'
+' GrasItalique Macro
+'
+
+'
+    With Selection.Font
+        .FontStyle = "Gras italique"
+    End With
+End Sub
+
+
+Sub AfficherBoiteDialogue()
+    ' Afficher une boîte de dialogue avec un bouton unique et le titre "Message VBA"
+    MsgBox "Bonjour", vbOKOnly + vbInformation, "Message VBA"
+End Sub
+
+Function CalculerCirconference() As Double
+    ' Demander à l'utilisateur la valeur du diamètre
+    Dim diametre As Double
+    diametre = InputBox("Veuillez entrer la valeur du diamètre du cercle:", "Calcul de la circonférence")
+
+    ' Calculer la circonférence en fonction du diamètre
+    Dim circonference As Double
+    circonference = diametre * Application.WorksheetFunction.Pi
+
+    ' Afficher le résultat dans une boîte de dialogue
+    MsgBox "La circonférence du cercle avec un diamètre de " & diametre & " est : " & circonference, vbInformation
+
+    ' Retourner la circonférence calculée (peut être omis si vous ne comptez pas utiliser la valeur calculée ailleurs dans le code)
+    CalculerCirconference = circonference
+End Function
+Sub CalculCirconference()
+    CalculerCirconference
+End Sub
+
+Sub exo8()
+    ' Demander à l'utilisateur de taper un nombre entre 1 et 10 (bornes comprises)
+    Dim nombre As Variant
+    Dim entreePrecedente As Variant
+    nombre = InputBox("Veuillez entrer un nombre entre 1 et 10:", "Entrée utilisateur")
+ 
+    ' Vérifier si le nombre est compris entre 1 et 10
+    If nombre < 1 Or nombre > 10 Then
+        MsgBox "Le nombre doit être compris entre 1 et 10.", vbExclamation
+        Exit Sub
+    End If
+
+    ' Afficher le résultat dans une boîte de dialogue
+    entreePrecedente = nombre + entreePrecedente
+    MsgBox "Le nombre tapé augmenté de l'entrée précédente est : " & entreePrecedente, vbInformation
+
+End Sub
+
+Sub DemanderEtAfficherNombre()
+    ' Demander à l'utilisateur de taper un nombre entre 1 et 10
+    Dim nombre As Variant
+    Dim entreePrecedente As Variant
+    
+    On Error Resume Next  ' Ignorer les erreurs pour l'instant
+    nombre = InputBox("Veuillez entrer un nombre entre 1 et 10:", "Entrée utilisateur")
+    On Error GoTo 0  ' Rétablir la gestion normale des erreurs
+    
+    ' Vérifier si l'utilisateur a annulé la saisie ou n'a pas entré un nombre valide
+    If nombre = "" Or Not IsNumeric(nombre) Then
+        MsgBox "Vous devez entrer un nombre valide.", vbExclamation
+        Exit Sub
+    End If
+    
+    ' Convertir le nombre en un nombre réel
+    nombre = CDbl(nombre)
+    
+    ' Vérifier si le nombre est compris entre 1 et 10
+    If nombre < 1 Or nombre > 10 Then
+        MsgBox "Le nombre doit être compris entre 1 et 10.", vbExclamation
+        Exit Sub
+    End If
+    
+    ' Afficher le résultat dans une boîte de dialogue
+    entreePrecedente = nombre + entreePrecedente
+    MsgBox "Le nombre tapé augmenté de l'entrée précédente est : " & entreePrecedente, vbInformation
+End Sub
+Sub BoucleDemandeEtAffichage()
+    Dim entreePrecedente As Double
+    
+    Do
+        ' Demander à l'utilisateur de taper un nombre entre 1 et 10
+        Dim nombre As Variant
+        On Error Resume Next  ' Ignorer les erreurs pour l'instant
+        nombre = InputBox("Veuillez entrer un nombre entre 1 et 10:", "Entrée utilisateur")
+        On Error GoTo 0  ' Rétablir la gestion normale des erreurs
+        
+        ' Vérifier si l'utilisateur a annulé la saisie ou n'a pas entré un nombre valide
+        If nombre = "" Or Not IsNumeric(nombre) Then
+            MsgBox "Vous devez entrer un nombre valide.", vbExclamation
+            Exit Sub
+        End If
+        
+        ' Convertir le nombre en un nombre réel
+        nombre = CDbl(nombre)
+        
+        ' Vérifier si le nombre est compris entre 1 et 10
+        If nombre < 1 Or nombre > 10 Then
+            MsgBox "Le nombre doit être compris entre 1 et 10.", vbExclamation
+            Exit Sub
+        End If
+        
+        ' Afficher le résultat dans une boîte de dialogue
+        entreePrecedente = nombre + entreePrecedente
+        MsgBox "Le nombre tapé augmenté de l'entrée précédente est : " & entreePrecedente, vbInformation
+        
+        ' Demander à l'utilisateur s'il souhaite continuer
+        Dim continuer As Integer
+        continuer = MsgBox("Voulez-vous continuer ?", vbYesNo + vbQuestion, "Continuer ?")
+        
+        If continuer = vbNo Then
+            Exit Do
+        End If
+    Loop
+End Sub
+
+Sub AfficherValeurDansCelluleActive()
+    ' Afficher la valeur 12 dans la cellule active
+    ActiveCell.Value = 12
+End Sub
+
+Sub DemanderValeurUtilisateur()
+    ' Déclaration des variables
+    Dim valeurUtilisateur As Variant
+    Dim message As String
+
+    ' Demander à l'utilisateur de taper une valeur entre 1 et 100
+    Do
+        valeurUtilisateur = InputBox("Tape une valeur entre 1 et 100:", "Entrée utilisateur")
+        
+        ' Vérifier si l'utilisateur a annulé la saisie
+        If valeurUtilisateur = "" Then
+            MsgBox "Opération annulée par l'utilisateur.", vbExclamation
+            Exit Sub
+        End If
+        
+        ' Convertir la valeur en un nombre entier
+        Dim valeurNumerique As Integer
+        On Error Resume Next
+        valeurNumerique = CInt(valeurUtilisateur)
+        On Error GoTo 0
+
+        ' Vérifier si la conversion a réussi et si la valeur est entre 1 et 100
+        If IsNumeric(valeurUtilisateur) And valeurNumerique >= 1 And valeurNumerique <= 100 Then
+            ' Construire le message à afficher
+            message = "La valeur entrée est : " & valeurUtilisateur
+
+            ' Afficher le message dans le coin supérieur gauche de l'écran
+            MsgBox message, vbInformation, "Message"
+            Exit Sub
+        Else
+            ' Afficher un message d'erreur
+            MsgBox "Veuillez entrer une valeur valide entre 1 et 100.", vbExclamation
+        End If
+    Loop
+End Sub
