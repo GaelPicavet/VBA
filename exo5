@@ -1,0 +1,4 @@
+Sub AfficherBoiteDialogue()
+    ' Afficher une boîte de dialogue avec un bouton unique et le titre "Message VBA"
+    MsgBox "Bonjour", vbOKOnly + vbInformation, "Message VBA"
+End Sub
