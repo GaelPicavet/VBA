@@ -1,0 +1,9 @@
+Sub Relatif()
+'
+' Relatif Macro
+'
+
+'
+    ActiveCell.FormulaR1C1 = "50"
+    ActiveCell.Offset(1, 0).Range("A1").Select
+End Sub
