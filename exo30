@@ -1,0 +1,14 @@
+Sub EnregistrerFichierAvecBoiteDialog()
+    Dim cheminFichier As Variant
+
+    ' Afficher la boîte de dialogue pour choisir l'emplacement et le nom du fichier
+    cheminFichier = Application.GetSaveAsFilename(FileFilter:="Fichiers Excel (*.xlsx), *.xlsx", Title:="Enregistrer le fichier sous")
+
+    ' Vérifier si l'utilisateur a cliqué sur "Annuler" dans la boîte de dialogue
+    If cheminFichier <> "Faux" And cheminFichier <> "False" Then
+        ' Enregistrer le fichier avec le nom et l'emplacement choisis
+        ActiveWorkbook.SaveAs cheminFichier
+    Else
+        MsgBox "L'enregistrement a été annulé.", vbInformation, "Informations"
+    End If
+End Sub
