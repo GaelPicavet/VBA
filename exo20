@@ -1,0 +1,71 @@
+Sub ExempleUtilisationTotalAPayer()
+    ' Définir les valeurs de test
+    Dim quantite As Integer
+    Dim prixHT As Double
+    Dim port As Double
+    
+    ' Assigner des valeurs de test
+    quantite = InputBox("Entrez la quantité:")
+    prixHT = InputBox("Entrez le prix HT par pièce:")
+    port = InputBox("Entrez les frais de port:")
+    
+    ' Appeler la fonction TotalAPayer
+    Dim total As Double
+    total = TotalAPayer(quantite, prixHT, port)
+    
+    ' Afficher le résultat
+    If total <> 0 Then
+        MsgBox "Le montant total à payer est de : " & total & " euros."
+    End If
+End Sub
+
+Function TotalAPayer(quantite As Integer, prixHT As Double, port As Double) As Double
+    Dim remise As Double
+
+    Select Case quantite
+        Case 1
+            remise = 0
+        Case 2 To 10
+            remise = 0.01
+        Case 11 To 20
+            remise = 0.05
+        Case 21 To 30
+            remise = 0.1
+        Case 31 To 40
+            remise = 0.15
+        Case 41 To 50
+            remise = 0.2
+        Case Is > 50
+            MsgBox "Erreur dans la quantité. La commande ne peut pas dépasser 50 pièces."
+            Exit Function
+    End Select
+
+    TotalAPayer = quantite * prixHT * (1 - remise) + port
+End Function
+Sub SaisieSommeInferieure1000()
+    ' Déclaration des variables
+    Dim somme As Integer
+    Dim nombre As Integer
+    
+    ' Initialiser la somme
+    somme = 0
+    
+    ' Boucle tant que la somme est inférieure à 1000
+    Do While somme < 1000
+        ' Demander à l'utilisateur de taper un nombre
+        nombre = Val(InputBox("Entrez un nombre de 3 chiffres maximum:"))
+        
+        ' Vérifier si l'entrée est un nombre de 3 chiffres maximum
+        If nombre >= 0 And nombre <= 999 Then
+            ' Ajouter le nombre à la somme
+            somme = somme + nombre
+        Else
+            ' Afficher un message d'erreur si l'entrée n'est pas valide
+            MsgBox "Veuillez entrer un nombre de 3 chiffres maximum.", vbExclamation, "Erreur de saisie"
+        End If
+    Loop
+    
+    ' Afficher la somme finale
+    MsgBox "La somme des nombres est maintenant supérieure ou égale à 1000. La somme totale est : " & somme, vbInformation, "Somme atteinte"
+End Sub
+Sub SaisieDateValide()
