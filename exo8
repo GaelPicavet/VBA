@@ -1,17 +1,67 @@
-Sub exo8()
-    ' Demander à l'utilisateur de taper un nombre entre 1 et 10 (bornes comprises)
+Sub DemanderEtAfficherNombre()
+    ' Demander à l'utilisateur de taper un nombre entre 1 et 10
     Dim nombre As Variant
     Dim entreePrecedente As Variant
+    
+    On Error Resume Next  ' Ignorer les erreurs pour l'instant
     nombre = InputBox("Veuillez entrer un nombre entre 1 et 10:", "Entrée utilisateur")
- 
+    On Error GoTo 0  ' Rétablir la gestion normale des erreurs
+    
+    ' Vérifier si l'utilisateur a annulé la saisie ou n'a pas entré un nombre valide
+    If nombre = "" Or Not IsNumeric(nombre) Then
+        MsgBox "Vous devez entrer un nombre valide.", vbExclamation
+        Exit Sub
+    End If
+    
+    ' Convertir le nombre en un nombre réel
+    nombre = CDbl(nombre)
+    
     ' Vérifier si le nombre est compris entre 1 et 10
     If nombre < 1 Or nombre > 10 Then
         MsgBox "Le nombre doit être compris entre 1 et 10.", vbExclamation
         Exit Sub
     End If
-
+    
     ' Afficher le résultat dans une boîte de dialogue
     entreePrecedente = nombre + entreePrecedente
     MsgBox "Le nombre tapé augmenté de l'entrée précédente est : " & entreePrecedente, vbInformation
-
 End Sub
+Sub BoucleDemandeEtAffichage()
+    Dim entreePrecedente As Double
+    
+    Do
+        ' Demander à l'utilisateur de taper un nombre entre 1 et 10
+        Dim nombre As Variant
+        On Error Resume Next  ' Ignorer les erreurs pour l'instant
+        nombre = InputBox("Veuillez entrer un nombre entre 1 et 10:", "Entrée utilisateur")
+        On Error GoTo 0  ' Rétablir la gestion normale des erreurs
+        
+        ' Vérifier si l'utilisateur a annulé la saisie ou n'a pas entré un nombre valide
+        If nombre = "" Or Not IsNumeric(nombre) Then
+            MsgBox "Vous devez entrer un nombre valide.", vbExclamation
+            Exit Sub
+        End If
+        
+        ' Convertir le nombre en un nombre réel
+        nombre = CDbl(nombre)
+        
+        ' Vérifier si le nombre est compris entre 1 et 10
+        If nombre < 1 Or nombre > 10 Then
+            MsgBox "Le nombre doit être compris entre 1 et 10.", vbExclamation
+            Exit Sub
+        End If
+        
+        ' Afficher le résultat dans une boîte de dialogue
+        entreePrecedente = nombre + entreePrecedente
+        MsgBox "Le nombre tapé augmenté de l'entrée précédente est : " & entreePrecedente, vbInformation
+        
+        ' Demander à l'utilisateur s'il souhaite continuer
+        Dim continuer As Integer
+        continuer = MsgBox("Voulez-vous continuer ?", vbYesNo + vbQuestion, "Continuer ?")
+        
+        If continuer = vbNo Then
+            Exit Do
+        End If
+    Loop
+End Sub
+
