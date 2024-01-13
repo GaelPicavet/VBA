@@ -1,0 +1,28 @@
+Sub SupprimerColonnesSelectionnees()
+    Dim choixUtilisateur As VbMsgBoxResult
+    Dim plageSelectionnee As Range
+
+    ' Sélectionner la plage
+    On Error Resume Next ' Ignorer les erreurs
+    Set plageSelectionnee = Application.InputBox("Sélectionnez la ou les colonnes à supprimer", Type:=8)
+    On Error GoTo 0 ' Réactiver la gestion normale des erreurs
+
+    ' Vérifier si l'utilisateur a cliqué sur "Annuler" dans la boîte de dialogue
+    If plageSelectionnee Is Nothing Then
+        MsgBox "Opération annulée.", vbInformation, "Informations"
+        Exit Sub
+    End If
+
+    ' Afficher la boîte de dialogue personnalisée
+    choixUtilisateur = MsgBox("Voulez-vous vraiment supprimer la ou les colonnes sélectionnées?", _
+                              vbExclamation + vbYesNo + vbDefaultButton2, "Confirmation de suppression")
+
+    ' Vérifier le choix de l'utilisateur
+    If choixUtilisateur = vbYes Then
+        ' Supprimer la ou les colonnes
+        plageSelectionnee.EntireColumn.Delete
+        MsgBox "Colonnes supprimées avec succès.", vbInformation, "Informations"
+    Else
+        MsgBox "Suppression annulée.", vbInformation, "Informations"
+    End If
+End Sub
