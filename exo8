@@ -1,0 +1,17 @@
+Sub exo8()
+    ' Demander à l'utilisateur de taper un nombre entre 1 et 10 (bornes comprises)
+    Dim nombre As Variant
+    Dim entreePrecedente As Variant
+    nombre = InputBox("Veuillez entrer un nombre entre 1 et 10:", "Entrée utilisateur")
+ 
+    ' Vérifier si le nombre est compris entre 1 et 10
+    If nombre < 1 Or nombre > 10 Then
+        MsgBox "Le nombre doit être compris entre 1 et 10.", vbExclamation
+        Exit Sub
+    End If
+
+    ' Afficher le résultat dans une boîte de dialogue
+    entreePrecedente = nombre + entreePrecedente
+    MsgBox "Le nombre tapé augmenté de l'entrée précédente est : " & entreePrecedente, vbInformation
+
+End Sub
