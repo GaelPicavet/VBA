@@ -1,0 +1,4 @@
+Sub AfficherValeurDansCelluleActive()
+    ' Afficher la valeur 12 dans la cellule active
+    ActiveCell.Value = 12
+End Sub
