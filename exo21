@@ -1,0 +1,26 @@
+Sub SaisieSommeInferieure1000()
+    ' Déclaration des variables
+    Dim somme As Integer
+    Dim nombre As Integer
+    
+    ' Initialiser la somme
+    somme = 0
+    
+    ' Boucle tant que la somme est inférieure à 1000
+    Do While somme < 1000
+        ' Demander à l'utilisateur de taper un nombre
+        nombre = Val(InputBox("Entrez un nombre de 3 chiffres maximum:"))
+        
+        ' Vérifier si l'entrée est un nombre de 3 chiffres maximum
+        If nombre >= 0 And nombre <= 999 Then
+            ' Ajouter le nombre à la somme
+            somme = somme + nombre
+        Else
+            ' Afficher un message d'erreur si l'entrée n'est pas valide
+            MsgBox "Veuillez entrer un nombre de 3 chiffres maximum.", vbExclamation, "Erreur de saisie"
+        End If
+    Loop
+    
+    ' Afficher la somme finale
+    MsgBox "La somme des nombres est maintenant supérieure ou égale à 1000. La somme totale est : " & somme, vbInformation, "Somme atteinte"
+End Sub
