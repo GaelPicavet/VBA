@@ -1,0 +1,14 @@
+Sub FormaterCelluleA1()
+    ' Vérifier si la cellule A1 est vide
+    If IsEmpty(ActiveSheet.Range("A1").Value) Then
+        ' Avertir l'utilisateur si la cellule est vide
+        MsgBox "La cellule A1 est vide. Aucun format ne sera appliqué.", vbExclamation, "Avertissement"
+    Else
+        ' Appliquer le format à la cellule A1
+        With ActiveSheet.Range("A1").Font
+            .Bold = True
+            .Underline = xlUnderlineStyleSingle
+            .Color = RGB(255, 0, 0) ' Rouge
+        End With
+    End If
+End Sub
