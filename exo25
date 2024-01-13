@@ -1,0 +1,15 @@
+Sub RenommerFeuilles()
+    Dim i As Integer
+    
+    ' Désactiver les mises à jour de l'écran pour améliorer les performances
+    Application.ScreenUpdating = False
+    
+    ' Boucle à travers toutes les feuilles du classeur
+    For i = 1 To Sheets.Count
+        ' Renommer la feuille avec l'index incrémentiel
+        Sheets(i).Name = CStr(i)
+    Next i
+    
+    ' Réactiver les mises à jour de l'écran
+    Application.ScreenUpdating = True
+End Sub
