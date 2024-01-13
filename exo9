@@ -1,0 +1,18 @@
+Function CalculerCirconference() As Double
+    ' Demander à l'utilisateur la valeur du diamètre
+    Dim diametre As Double
+    diametre = InputBox("Veuillez entrer la valeur du diamètre du cercle:", "Calcul de la circonférence")
+
+    ' Calculer la circonférence en fonction du diamètre
+    Dim circonference As Double
+    circonference = diametre * Application.WorksheetFunction.Pi
+
+    ' Afficher le résultat dans une boîte de dialogue
+    MsgBox "La circonférence du cercle avec un diamètre de " & diametre & " est : " & circonference, vbInformation
+
+    ' Retourner la circonférence calculée (peut être omis si vous ne comptez pas utiliser la valeur calculée ailleurs dans le code)
+    CalculerCirconference = circonference
+End Function
+Sub CalculCirconference()
+    CalculerCirconference
+End Sub
