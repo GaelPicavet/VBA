@@ -1,0 +1,17 @@
+Sub AppliquerCouleurSelonA1()
+    ' Vérifier la couleur de la cellule A1
+    Select Case ActiveSheet.Range("A1").Interior.Color
+        Case RGB(255, 0, 0) ' Rouge
+            ' Colorier toutes les cellules en rouge
+            ActiveSheet.Cells.Interior.Color = RGB(255, 0, 0)
+        Case RGB(0, 255, 0) ' Vert
+            ' Colorier toutes les cellules en vert
+            ActiveSheet.Cells.Interior.Color = RGB(0, 255, 0)
+        Case RGB(0, 0, 255) ' Bleu
+            ' Colorier toutes les cellules en bleu
+            ActiveSheet.Cells.Interior.Color = RGB(0, 0, 255)
+        Case Else ' Si aucune des couleurs précédentes
+            ' Colorier toutes les cellules en jaune
+            ActiveSheet.Cells.Interior.Color = RGB(255, 255, 0)
+    End Select
+End Sub
