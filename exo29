@@ -1,0 +1,26 @@
+Sub OuvrirFichierExcelAvecBoiteDialog()
+    Dim dlg As FileDialog
+    Dim fichier As String
+
+    ' Créer une instance de la boîte de dialogue de fichier
+    Set dlg = Application.FileDialog(msoFileDialogOpen)
+
+    ' Configurer la boîte de dialogue
+    With dlg
+        .Title = "Ouvrir un fichier Excel"
+        .Filters.Clear
+        .Filters.Add "Fichiers Excel", "*.xlsx; *.xls", 1
+        .AllowMultiSelect = False
+    End With
+
+    ' Afficher la boîte de dialogue et vérifier si l'utilisateur a cliqué sur "Ouvrir"
+    If dlg.Show = -1 Then
+        ' Récupérer le chemin du fichier sélectionné
+        fichier = dlg.SelectedItems(1)
+
+        ' Ouvrir le fichier Excel sélectionné
+        Workbooks.Open fichier
+    Else
+        MsgBox "Aucun fichier sélectionné.", vbInformation, "Informations"
+    End If
+End Sub
