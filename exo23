@@ -1,0 +1,55 @@
+Sub RemplirCellulesColonneE()
+    ' Déclaration de la variable i
+    Dim i As Integer
+
+    ' Activer la feuille "Charleroi" (assurez-vous que la feuille existe)
+    On Error Resume Next
+    Sheets("Charleroi").Activate
+    On Error GoTo 0
+    
+    ' Vérifier si la feuille a été activée avec succès
+    If ActiveSheet.Name = "Charleroi" Then
+        ' Sélectionner la cellule E5
+        Range("E5").Select
+
+        ' Boucle pour remplir les cellules de la colonne E de la ligne 5 à 1000
+        For i = 1 To 1000
+            ' Inscrire le texte dans la cellule active
+            ActiveCell.Value = "Je suis dans la cellule " & i & " de la colonne E"
+            
+            ' Descendre d'une cellule si ce n'est pas la dernière itération
+            If i < 1000 Then
+                ActiveCell.Offset(1, 0).Select
+            End If
+        Next i
+    Else
+        MsgBox "La feuille 'Charleroi' n'a pas été trouvée dans le classeur.", vbExclamation, "Feuille manquante"
+    End If
+End Sub
+Sub RemplirCellulesColonneE2()
+    Dim i As Integer ' Déclaration de la variable i
+
+    ' Activer la feuille "Charleroi" (assurez-vous que la feuille existe)
+    On Error Resume Next
+    Sheets("Charleroi").Activate
+    On Error GoTo 0
+    
+    ' Vérifier si la feuille a été activée avec succès
+    If ActiveSheet.Name = "Charleroi" Then
+        ' Sélectionner la cellule E5
+        Range("E5").Select
+
+        ' Boucle pour remplir les cellules de la colonne E de la ligne 5 à 1000, avec un pas de 5
+        For i = 1 To 1000 Step 5
+            ' Inscrire le texte dans la cellule active
+            ActiveCell.Value = "Je suis dans la cellule " & i & " de la colonne E"
+
+            ' Descendre d'une cellule si ce n'est pas la dernière itération
+            If i + 5 <= 1000 Then
+                ActiveCell.Offset(5, 0).Select
+            End If
+        Next i
+    Else
+        MsgBox "La feuille 'Charleroi' n'a pas été trouvée dans le classeur.", vbExclamation, "Feuille manquante"
+    End If
+End Sub
