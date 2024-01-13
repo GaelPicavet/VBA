@@ -1,0 +1,30 @@
+Sub StatistiquesPlageSelectionAutomatique()
+    Dim plage As Range
+    Dim moyenne As Double
+    Dim maximum As Double
+    Dim minimum As Double
+
+    ' Activer la feuille active
+    ActiveSheet.Activate
+
+    ' Inviter le système à proposer une plage à sélectionner
+    On Error Resume Next ' Ignorer les erreurs
+    Set plage = Application.InputBox("Sélectionnez une plage de données", Type:=8)
+    On Error GoTo 0 ' Réactiver la gestion normale des erreurs
+
+    ' Vérifier si l'utilisateur a cliqué sur "Annuler" dans la boîte de dialogue
+    If plage Is Nothing Then
+        MsgBox "Opération annulée.", vbInformation, "Informations"
+        Exit Sub
+    End If
+
+    ' Calculer la moyenne, le maximum et le minimum
+    moyenne = WorksheetFunction.Average(plage)
+    maximum = WorksheetFunction.Max(plage)
+    minimum = WorksheetFunction.Min(plage)
+
+    ' Afficher les statistiques dans une boîte de dialogue
+    MsgBox "Moyenne : " & moyenne & vbCrLf & _
+           "Maximum : " & maximum & vbCrLf & _
+           "Minimum : " & minimum, vbInformation, "Statistiques de la plage"
+End Sub
