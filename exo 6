@@ -1,0 +1,3 @@
+Sub ChercherErreur
+       Msgbox 'Voici un nouveau message'
+End sub
