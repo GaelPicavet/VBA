@@ -1,0 +1,9 @@
+Sub VerifierCelluleA1()
+    ' Vérifier si la cellule A1 est vide
+    If IsEmpty(ActiveSheet.Range("A1").Value) Then
+        ' Émettre un bip
+        Beep
+        ' Afficher un message sans titre
+        MsgBox "pas de titre", vbExclamation, "La cellule A1 est vide"
+    End If
+End Sub
