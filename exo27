@@ -1,0 +1,12 @@
+Sub AfficherNombreBoitesEtTri()
+    Dim nbBoites As Integer ' Variable pour stocker le nombre de boîtes de dialogue
+
+    ' Afficher le nombre de boîtes de dialogue intégrées
+    nbBoites = Application.Dialogs.Count
+    MsgBox "Nombre de boîtes de dialogue intégrées : " & nbBoites, vbInformation, "Information"
+
+    ' Afficher la boîte de dialogue de tri
+    On Error Resume Next ' Ignorer les erreurs
+    Application.Dialogs(xlDialogSort).Show
+    On Error GoTo 0 ' Réactiver la gestion normale des erreurs
+End Sub
