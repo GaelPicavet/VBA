@@ -1,0 +1,29 @@
+Sub GestionDesFeuilles()
+    Dim i As Integer ' Déclaration de la variable i
+
+    ' Désactiver les messages d'alerte d'Excel
+    Application.DisplayAlerts = False
+    
+    On Error Resume Next ' Ignorer les erreurs et continuer
+
+    ' Boucle pour ajuster le nombre de feuilles à 12
+    Do While Sheets.Count <> 12
+        If Sheets.Count < 12 Then
+            ' Ajouter une feuille si trop peu
+            Sheets.Add After:=Sheets(Sheets.Count)
+        Else
+            ' Retirer une feuille si trop de feuilles
+            Sheets(Sheets.Count).Delete
+        End If
+    Loop
+
+    ' Renommer les feuilles de janvier à décembre
+    For i = 1 To 12
+        Sheets(i).Name = Format(DateSerial(Year(Date), i, 1), "mmmm")
+    Next i
+
+    ' Réactiver les messages d'alerte d'Excel
+    Application.DisplayAlerts = True
+
+    On Error GoTo 0 ' Réactiver la gestion normale des erreurs
+End Sub
