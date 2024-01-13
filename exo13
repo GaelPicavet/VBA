@@ -1,0 +1,87 @@
+Sub DemanderValeurUtilisateur()
+    ' Déclaration des variables
+    Dim valeurUtilisateur As Variant
+    Dim message As String
+
+    ' Demander à l'utilisateur de taper une valeur entre 1 et 100
+    Do
+        valeurUtilisateur = InputBox("Tape une valeur entre 1 et 100:", "Entrée utilisateur")
+        
+        ' Vérifier si l'utilisateur a annulé la saisie
+        If valeurUtilisateur = "" Then
+            MsgBox "Opération annulée par l'utilisateur.", vbExclamation
+            Exit Sub
+        End If
+        
+        ' Convertir la valeur en un nombre entier
+        Dim valeurNumerique As Integer
+        On Error Resume Next
+        valeurNumerique = CInt(valeurUtilisateur)
+        On Error GoTo 0
+
+        ' Vérifier si la conversion a réussi et si la valeur est entre 1 et 100
+        If IsNumeric(valeurUtilisateur) And valeurNumerique >= 1 And valeurNumerique <= 100 Then
+            ' Construire le message à afficher
+            message = "La valeur entrée est : " & valeurUtilisateur
+
+            ' Afficher le message dans le coin supérieur gauche de l'écran
+            MsgBox message, vbInformation, "Message"
+            Exit Sub
+        Else
+            ' Afficher un message d'erreur
+            MsgBox "Veuillez entrer une valeur valide entre 1 et 100.", vbExclamation
+        End If
+    Loop
+End Sub
+Public Function GestionErreur() As Variant
+    Dim inputBoxLeft As Double
+    Dim inputBoxTop As Double
+    
+    With Application
+        inputBoxLeft = .Selection.Left + .Left
+        inputBoxTop = .Selection.Top + .Top
+
+        Do
+            ' Demander à l'utilisateur de retaper une valeur entre 1 et 100
+            GestionErreur = .InputBox("La valeur saisie n'est pas valide. Veuillez entrer un nombre entre 1 et 100.", "Erreur de saisie", , inputBoxLeft, inputBoxTop)
+        Loop Until IsNumeric(GestionErreur) And GestionErreur >= 1 And GestionErreur <= 100 Or GestionErreur = ""
+    End With
+End Function
+
+Sub DemanderValeur()
+    ' Déclaration des variables
+    Dim valeurUtilisateur As Variant
+    Dim valeurNumerique As Double
+
+    With Application
+        Do
+            ' Demander à l'utilisateur de taper une valeur entre 1 et 100
+            valeurUtilisateur = .InputBox("Tape une valeur entre 1 et 100", "Entrer une valeur", , .Selection.Left + .Left, .Selection.Top + .Top)
+
+            ' Vérifier si l'utilisateur a cliqué sur Annuler
+            If valeurUtilisateur = "" Then
+                MsgBox "Vous avez annulé. La procédure se termine.", vbInformation
+                Exit Sub
+            End If
+
+            ' Convertir la valeur en nombre
+            On Error Resume Next
+            valeurNumerique = CDbl(valeurUtilisateur)
+            On Error GoTo 0
+
+            ' Vérifier si la valeur est un nombre valide entre 1 et 100
+            If IsNumeric(valeurNumerique) And valeurNumerique >= 1 And valeurNumerique <= 100 Then
+                ' Afficher la valeur dans le coin supérieur gauche de l'écran
+                MsgBox "Vous avez saisi la valeur : " & valeurNumerique, vbInformation, "Valeur valide"
+                Exit Sub
+            Else
+                ' Appeler la fonction de correction pour retaper une valeur
+                valeurUtilisateur = GestionErreur
+                If valeurUtilisateur = "" Then
+                    MsgBox "Vous avez annulé. La procédure se termine.", vbInformation
+                    Exit Sub
+                End If
+            End If
+        Loop
+    End With
+End Sub
